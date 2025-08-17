@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: springboot-jpa-webservice
+  profiles:
+    active: test
+  jpa:
+    open-in-view: true
