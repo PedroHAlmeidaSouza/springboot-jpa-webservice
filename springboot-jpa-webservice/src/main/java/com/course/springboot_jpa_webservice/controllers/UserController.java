@@ -1,21 +1,36 @@
 package com.course.springboot_jpa_webservice.controllers;
 
 import com.course.springboot_jpa_webservice.entities.User;
+import com.course.springboot_jpa_webservice.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// Anotação que define que uma classe responde requisições HTTP com dados (JSON)
+import java.util.List;
+
 @RestController
-// Mapeia URLs HTTP para métodos ou classes controladoras no Spring.
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
-    // ResponseEntity é um tipo especifíco do Spring para retornar respostas de requisições WEB
-    public ResponseEntity<User> findAll() {
-        User user = new User(1L, "Maria", "maria@gmail.com", "999999999", "12345");
-        return ResponseEntity.ok(user);
+    public ResponseEntity<List<User>> findAll() {
+
+        List<User> list = userService.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<User> findById(@PathVariable Long userId) {
+
+        User obj = userService.findById(userId);
+        return ResponseEntity.ok().body(obj);
     }
 }
