@@ -1,14 +1,8 @@
 package com.course.springboot_jpa_webservice.config;
 
-import com.course.springboot_jpa_webservice.entities.Category;
-import com.course.springboot_jpa_webservice.entities.Order;
-import com.course.springboot_jpa_webservice.entities.Product;
-import com.course.springboot_jpa_webservice.entities.User;
+import com.course.springboot_jpa_webservice.entities.*;
 import com.course.springboot_jpa_webservice.entities.enums.OrderStatus;
-import com.course.springboot_jpa_webservice.repositories.CategoryRepository;
-import com.course.springboot_jpa_webservice.repositories.OrderRepository;
-import com.course.springboot_jpa_webservice.repositories.ProductRepository;
-import com.course.springboot_jpa_webservice.repositories.UserRepository;
+import com.course.springboot_jpa_webservice.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,12 +18,14 @@ public class TestConfig implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
 
-    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
@@ -66,5 +62,12 @@ public class TestConfig implements CommandLineRunner {
 
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
     }
 }
